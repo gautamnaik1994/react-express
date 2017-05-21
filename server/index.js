@@ -4,11 +4,12 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser') ;
 const router = require('./router');
 require('./db/mongoose');
-
+const cors = require('cors');
 
 
 const app = express();
 app.use(morgan('combined'));
+app.use(cors());
 app.use(bodyParser.json({ type: '*/*' }));
 router(app);
 
