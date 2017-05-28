@@ -149,5 +149,5 @@ module.exports = {
         hot: true
         //compress: true,
     },
-    devtool: !isProd ? undefined : 'eval-source-map'
+    devtool: isProd ? undefined : 'eval-source-map'
 };

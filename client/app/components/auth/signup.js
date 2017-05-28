@@ -4,15 +4,15 @@ import { reduxForm, Form, Field } from 'redux-form';
 import { Link,Redirect } from 'react-router-dom';
 import * as actions from '../../actions/index';
 
-class SignIn extends Component {
-    constructor(props) {
-        super(props);
-        console.log("INIT ", props);
+class SignUp extends Component{
+     constructor(props) {
+         super(props);
+         console.log('props', props); 
         this.onSubmit = this.onSubmit.bind(this);
         this.renderAlert = this.renderAlert.bind(this);
     }
-    onSubmit(props) {
-        this.props.signinUser({ email: props.email, password: props.password },this.props.history);   
+       onSubmit(props) {
+       this.props.signupUser({ email: props.email, password: props.password },this.props.history);   
     }
 
     renderAlert() {
@@ -23,22 +23,24 @@ class SignIn extends Component {
                 </div>
             )
         }
-    }
-
-    render() {
+       }
+    
+        render() {
         const { handleSubmit } = this.props;
         return (
             <Form onSubmit={handleSubmit(this.onSubmit)}>
-                <h3>Sign In</h3>
+                <h3>Sign Up</h3>
                 <Field name="email" type="email" component={renderField} label="email" />
                 <Field name="password" type="password" component={renderField} label="Password" />
+                <Field name="confirmpassword" type="password" component={renderField} label="Confirm Password" />
                 {this.renderAlert()}
-                <button className="btn btn-primary" type="submit">Sign In</button>
+                <button className="btn btn-primary" type="submit">Sign Up</button>
                 <Link to="/" className="btn btn-danger">Back</Link>
             </Form>
 
         );
     }
+
 }
 
 const renderField = ({ input, label, type, meta: { touched, invalid, error, warning } }) => (
@@ -46,7 +48,7 @@ const renderField = ({ input, label, type, meta: { touched, invalid, error, warn
         <label>{label}</label>
         <div>
             <input {...input} placeholder={label} type={type} className="form-control" />
-            {touched && ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
+            {touched &&  ((error && <span>{error}</span>) || (warning && <span>{warning}</span>))}
         </div>
     </div>
 )
@@ -60,24 +62,19 @@ function validate(values) {
     if (!values.password) {
         errors.password = 'Enter password';
     }
+    if (values.password != values.confirmpassword) {
+        errors.password = 'Passwords donot match';
+    }
     return errors;
 }
 
 function mapStateToProps(state) {
     return { errorMessage: state.auth.error };
 }
-
-//connect arguments(mapState,mapDispatch)
-//reduxForm arguements (config, mapState,mapDispatch)
-
-// export default reduxForm({
-//     form: 'SignInForm'
-// },null,{createPost})(SignIn);
-
-SignIn = reduxForm({
-    form: 'signIn',
+ 
+SignUp = reduxForm({
+    form: 'signUp',
     validate
-})(SignIn)
+})(SignUp)
 
-export default connect(mapStateToProps, actions)(SignIn)
-
+export default connect(mapStateToProps, actions)(SignUp)
